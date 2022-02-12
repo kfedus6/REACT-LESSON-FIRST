@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+   <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+   <link rel="stylesheet" href="main.css">
+   <title>Document</title>
+</head>
+
+<body>
+   <div id="app"></div>
+
+   <script type="text/babel">
+
+      let user = {
+         id: 5,
+         age: 11,
+         surename: 'Morozov',
+         name: 'Pavlo',
+         date: '11.11.2001',
+         imglink: 'https://klike.net/uploads/posts/2020-04/1587719791_1.jpg'
+      };
+
+      const styleImg = {
+         'width': '300px',
+         'height': '300px'
+      };
+
+
+      ReactDOM.render(
+         <div><img style={styleImg} src={user.imglink}></img> <span>Name: {user.name} </span>
+            <span>Surename: {user.surename} </span> <span>Date: {user.date} </span> <span>Age:{user.age} </span>
+            <span>Id: {user.id}</span>
+         </div>,
+         document.getElementById('app')
+      )
+
+   </script>
+</body>
+
+</html>

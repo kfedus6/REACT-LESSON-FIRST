@@ -2,3 +2,10 @@
    background-color: aqua;
    color: red;
 }
+
+span {
+   left: 80px;
+   display: block;
+   position: relative;
+   font-size: 24px;
+}
