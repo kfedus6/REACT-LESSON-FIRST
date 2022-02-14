@@ -5,37 +5,38 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-   <link rel="stylesheet" href="main.css">
+
    <title>Document</title>
 </head>
 
 <body>
    <div id="app"></div>
+   <!--
+   <div id="container"></div>
+   <script type="text/babel" src="index.jsx"></script>
+   <script type="text/babel" src="timer.jsx"></script>
+   -->
 
    <script type="text/babel">
-      let number = 3;
-      let numberTwo = 4;
-
-      const styleNubmer = {
-         "color": "black",
-         "fontSize": "24px"
+      class Header extends React.Component {
+         render() {
+            return (
+               <ul>
+                  <li>{this.props.main}</li>
+                  <li></li>
+                  <li></li>
+               </ul>
+            )
+         }
       }
 
-      /*
-         user
-         id = 5
-         age = 11
-         surname = morozov
-         name = pasha
-         date = 12.21.11
-         imglink = link ava
-      */
-
+      Header.defaultProps = { main: 'main', about: 'about', info: 'info' }
       ReactDOM.render(
-         <h1 className="example">{number} + <span style={styleNubmer}>{numberTwo}</span> = {number + numberTwo}</h1>,
+         <Header main='info_main' about='text about' />,
          document.getElementById("app")
       )
    </script>
