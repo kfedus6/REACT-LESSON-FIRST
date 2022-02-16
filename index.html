@@ -15,28 +15,54 @@
 
 <body>
    <div id="app"></div>
-   <!--
-   <div id="container"></div>
-   <script type="text/babel" src="index.jsx"></script>
-   <script type="text/babel" src="timer.jsx"></script>
-   -->
 
    <script type="text/babel">
-      class Header extends React.Component {
+
+      let users_arr = [
+         { name: "Dima", age: "12", student: "False" },
+         { name: "Pasha", age: "11", student: "False" },
+         { name: "Gosha", age: "10", student: "False" },
+      ]
+
+      class UserList extends React.Component {
+         constructor(props) {
+            super(props)
+         }
+
          render() {
-            return (
-               <ul>
-                  <li>{this.props.main}</li>
-                  <li></li>
-                  <li></li>
-               </ul>
-            )
+            let users = this.props.users.map(item => {
+               return (
+                  <div>
+                     {item.name}
+                     {item.age}
+                     {item.student}
+                  </div>)
+            })
+
+            return users;
          }
       }
 
-      Header.defaultProps = { main: 'main', about: 'about', info: 'info' }
+      class UIControllerUsers extends React.Component {
+         constructor(props) {
+            super(props)
+            this.press = this.press.bind(this)
+         }
+
+         press() {
+            alert(this.props.name)
+         }
+
+         render() {
+            return <button onClick={this.press}>Click</button>
+         }
+      }
+
       ReactDOM.render(
-         <Header main='info_main' about='text about' />,
+         <>
+            <UserList users={users_arr} />
+            <UIControllerUsers name="dima" age="22" />
+         </>,
          document.getElementById("app")
       )
    </script>
