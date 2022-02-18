@@ -16,57 +16,149 @@
 <body>
    <div id="app"></div>
 
+   <style>
+      .main__task {
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+      }
+
+      .form__task {
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         align-items: center;
+      }
+
+      .btn {
+         position: absolute;
+         right: 250px;
+      }
+
+      .btn button {
+         font-size: 15px;
+         border-radius: 20px;
+         background-color: red;
+         color: white;
+      }
+   </style>
+
    <script type="text/babel">
 
-      let users_arr = [
-         { name: "Dima", age: "12", student: "False" },
-         { name: "Pasha", age: "11", student: "False" },
-         { name: "Gosha", age: "10", student: "False" },
+      const styleTaskList = {
+         border: "2px solid black",
+         width: "300px",
+         fontSize: "24px",
+         padding: "10px",
+         display: 'flex'
+      }
+
+      const styleNameTask = {
+         marginLeft: "10px"
+      }
+
+      const stylePriority = {
+         marginLeft: "30px"
+      }
+
+      let tasks = [
+         { nameTask: "Помыть посуду", priority: 'Н' },
+         { nameTask: "Пропылососить", priority: 'В' },
+         { nameTask: "Вытрать пыль", priority: 'В' },
+         { nameTask: "Вынести мусор", priority: 'Н' },
+         { nameTask: "Помыть пол", priority: 'Н' },
       ]
 
-      class UserList extends React.Component {
+      class TaskList extends React.Component {
          constructor(props) {
             super(props)
          }
 
          render() {
-            let users = this.props.users.map(item => {
-               return (
-                  <div>
-                     {item.name}
-                     {item.age}
-                     {item.student}
-                  </div>)
-            })
+            let tasks = this.props.tasksList.map((taskObject, index) => {
+               console.log(tasks)
+               return <Task task={index, taskObject} />
 
-            return users;
+            })
+            return (
+               <div className="main__task">
+                  {tasks}
+               </div>
+            );
          }
       }
 
-      class UIControllerUsers extends React.Component {
+      class Task extends React.Component {
          constructor(props) {
             super(props)
-            this.press = this.press.bind(this)
          }
 
-         press() {
-            alert(this.props.name)
+         removeBlock() {
+            let btn = document.querySelectorAll('.remove');
+            let block = document.querySelectorAll('.block__list');
+            for (let i = 0; i < btn.length; i++) {
+               btn[i].onclick = () => {
+                  block[i].remove();
+               }
+            }
          }
 
          render() {
-            return <button onClick={this.press}>Click</button>
+            return (
+               <div className="block__list" style={styleTaskList}>
+                  <div >
+                     <span style={styleNameTask}>{this.props.task.nameTask}</span>
+                     <span style={stylePriority}>{this.props.task.priority}</span>
+                  </div>
+                  <div className="btn">
+                     <button className="remove" onClick={this.removeBlock}>Delete</button>
+                  </div>
+               </div>)
+         }
+      }
+
+      class FormAddTask extends React.Component {
+         constructor(props) {
+            super(props)
+
+            this.state = { task: "" }
+
+            this.press = this.press.bind(this);
+            this.changeTask = this.changeTask.bind(this);
+
+         }
+
+         press(e) {
+            alert(this.state.task);
+            document.querySelector('.task__new').value = '';
+            document.querySelector('.priority__new').value = '';
+         }
+
+         changeTask(e) {
+            this.setState({ task: e.target.value });
+         }
+
+         render() {
+            return (
+               <div className="form__task">
+                  <input className="task__new" onChange={this.changeTask} type="text" />
+                  <input className="priority__new" type="text" />
+                  <button onClick={this.press}>Добавить</button>
+               </div>
+            )
          }
       }
 
       ReactDOM.render(
          <>
-            <UserList users={users_arr} />
-            <UIControllerUsers name="dima" age="22" />
+            <FormAddTask />
+            <TaskList tasksList={tasks} />
          </>,
-         document.getElementById("app")
+         document.getElementById('app')
       )
-   </script>
 
+   </script>
 </body>
 
 </html>
