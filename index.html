@@ -31,16 +31,12 @@
          align-items: center;
       }
 
-      .btn {
-         position: absolute;
-         right: 250px;
-      }
-
       .btn button {
          font-size: 15px;
          border-radius: 20px;
          background-color: red;
          color: white;
+         cursor: pointer;
       }
    </style>
 
@@ -62,14 +58,6 @@
          marginLeft: "30px"
       }
 
-      let tasks = [
-         { nameTask: "Помыть посуду", priority: 'Н' },
-         { nameTask: "Пропылососить", priority: 'В' },
-         { nameTask: "Вытрать пыль", priority: 'В' },
-         { nameTask: "Вынести мусор", priority: 'Н' },
-         { nameTask: "Помыть пол", priority: 'Н' },
-      ]
-
       class TaskList extends React.Component {
          constructor(props) {
             super(props)
@@ -77,9 +65,8 @@
 
          render() {
             let tasks = this.props.tasksList.map((taskObject, index) => {
-               console.log(tasks)
-               return <Task task={index, taskObject} />
-
+               console.log(index)
+               return <Task number={index + 1} task={taskObject} />
             })
             return (
                <div className="main__task">
@@ -95,10 +82,10 @@
          }
 
          removeBlock() {
-            let btn = document.querySelectorAll('.remove');
+            let removeBtn = document.querySelectorAll('.remove');
             let block = document.querySelectorAll('.block__list');
-            for (let i = 0; i < btn.length; i++) {
-               btn[i].onclick = () => {
+            for (let i = 0; i < removeBtn.length; i++) {
+               removeBtn[i].onclick = () => {
                   block[i].remove();
                }
             }
@@ -107,7 +94,8 @@
          render() {
             return (
                <div className="block__list" style={styleTaskList}>
-                  <div >
+                  <div>
+                     <span>{this.props.number}</span>
                      <span style={styleNameTask}>{this.props.task.nameTask}</span>
                      <span style={stylePriority}>{this.props.task.priority}</span>
                   </div>
@@ -122,39 +110,71 @@
          constructor(props) {
             super(props)
 
-            this.state = { task: "" }
+            this.state = { task: "", priority: "" }
 
             this.press = this.press.bind(this);
             this.changeTask = this.changeTask.bind(this);
+            this.changePriority = this.changePriority.bind(this);
 
          }
 
          press(e) {
             alert(this.state.task);
-            document.querySelector('.task__new').value = '';
-            document.querySelector('.priority__new').value = '';
+            alert(this.state.priority);
+            this.setState({ task: "", priority: "" })
+            //this.props.tasksList.push({ nameTask: this.state.task, priority: this.state.priority })
+            //Мне нужно передать объект стейта в компонент апп
+            this.props.addTasks({ task: this.state.task, priority: this.state.priority })
          }
 
          changeTask(e) {
             this.setState({ task: e.target.value });
          }
 
+         changePriority(e) {
+            this.setState({ priority: e.target.value });
+         }
+
          render() {
             return (
                <div className="form__task">
-                  <input className="task__new" onChange={this.changeTask} type="text" />
-                  <input className="priority__new" type="text" />
+                  <input className="task__new" onChange={this.changeTask} value={this.state.task} type="text" />
+                  <input className="priority__new" onChange={this.changePriority} value={this.state.priority} type="text" />
                   <button onClick={this.press}>Добавить</button>
                </div>
             )
          }
       }
 
+
+      class App extends React.Component {
+         constructor(props) {
+            super(props)
+            this.state = {
+               tasks: [
+                  { nameTask: "Помыть посуду", priority: 'Н' },
+                  { nameTask: "Пропылососить", priority: 'В' },
+                  { nameTask: "Вытрать пыль", priority: 'В' },
+                  { nameTask: "Вынести мусор", priority: 'Н' },
+                  { nameTask: "Помыть пол", priority: 'Н' },
+               ]
+            }
+         }
+
+         addTasks(task) {
+            this.setState(task)
+         }
+
+         render() {
+            return <>
+               <FormAddTask addTasks={this.addTasks} tasksList={this.state.tasks} />
+               <TaskList tasksList={this.state.tasks} />
+            </>
+         }
+      }
+
       ReactDOM.render(
-         <>
-            <FormAddTask />
-            <TaskList tasksList={tasks} />
-         </>,
+         <App />,
          document.getElementById('app')
       )
 
